@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Список покупок{% endblock %}
+{% block content %}
+  {% load static %}
+  {% csrf_token %}
+    <link rel="stylesheet" href="{% static 'pages/shopList.css' %}">
+    <main class="main container">
+      <div class="main__header">
+        <h1 class="main__title">Список покупок</h1>
+      </div>
+      {% if purchases %}
+        <div class="card-list card-list_column">
+          <ul class="shopping-list">
+            {% for purchase in purchases_list %}
+              {% include 'recipes/includes/purchase_item.html' with recipe=recipe %}
+            {% endfor %}
+            {% include 'includes/buttons/shopping-list.html' %}
+          </ul>
+        </div>
+      {% endif %}
+      {% if object_list %}
+        {% include 'includes/buttons/shopping-list.html' %}
+      {% else %}
+        <p class="recipe__text">Ваш список покупок пуст</p>
+      {% endif %}
+      {% include 'includes/paginator.html' %}
+    </main>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/config/config.js' %}"></script>
+  <script src="{% static 'js/components/Header.js' %}"></script>
+  <script src="{% static 'js/components/ShopList.js' %}"></script>
+  <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'js/utils/shopList.js' %}"></script>
+{% endblock %}

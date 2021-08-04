@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Мои подписки{% endblock %}
+{% block content %}
+    {% load static %}
+    {% csrf_token %}
+    <link rel="stylesheet" href="{% static 'pages/myFollow.css' %}">
+    <div class="main__header">
+        <h1 class="main__title">Мои подписки</h1>
+    </div>
+    <div class="card-list">
+        {% for author, recipes in favorite_recipes.items %}
+            <div class="card-user" data-author="{{ author.id }}">
+                <div class="card-user__header">
+                    <h2 class="card-user__title">{{ author.get_full_name }}</h2>
+                </div>
+                {% for recipe in recipes %}
+                    <div class="card-user__body">
+                        <ul class="card-user__items">
+                            <li class="card-user__item">
+                                <div class="recipe">
+                                    <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="recipe__image">
+                                    <h3 class="recipe__title">{{ recipe.name }}</h3>
+                                    <p class="recipe__text"><span class="icon-time"></span>{{ recipe.cook_time }}мин.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                {% endfor %}
+                <div class="card-user__footer">
+                    <button class="button button_style_light-blue button_size_auto"
+                            name="subscribe"  id="subscriptions">Отписаться</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
