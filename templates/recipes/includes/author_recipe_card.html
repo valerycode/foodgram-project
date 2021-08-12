@@ -1,0 +1,49 @@
+{% load user_filters recipe_filters %}
+<div class="card-user" data-author="{{ author.id }}">
+    {% csrf_token %}
+    <div class="card-user__header">
+      <h2 class="card-user__title">
+        <a href="{% url 'recipes:author-profile' author.username %}">{{ author.get_full_name|default:author.username }}</a>
+      </h2>
+    </div>
+    <div class="card-user__body">
+        <ul class="card-user__items">
+            {% for recipe in author.author_recipes.all|slice:"3" %}
+              <li class="card-user__item">
+                <div class="recipe">
+                  {% load thumbnail %}
+                    {% thumbnail recipe.image "72x72" crop="center" upscale=True as im %}
+                      <a href="{% url 'recipes:recipe-view' recipe.id %}"
+                         class="link" target="_blank">
+                         <img src="{{ im.url }}"
+                              width="{{ im.width }}"
+                              height="{{ im.height }}"
+                              alt="{{ recipe.name }}"
+                              class="recipe__image"></a>
+                    {% endthumbnail %}
+                    <h3 class="recipe__title">{{ recipe.name }}</h3>
+                    <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
+                </div>
+              </li>
+            {% endfor %}
+            {% if author.author_recipes.count > 3 %}
+              <li class="card-user__item">
+                <a href="{% url 'recipes:author-profile' author.username %}"
+                   {% with word='рецепт' count=author.author_recipes.count|subtract:3 %}
+                   class="card-user__link link">
+                   Еще {{ count }} {{ count|ru_pluralize:'рецепт, рецепта, рецептов' }}...</a>
+                   {% endwith %}
+              </li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="card-user__footer">
+      {% if request.user.is_authenticated and request.user != author %}
+        {% if author|has_subscription:request.user %}
+          {% include 'includes/buttons/unsubscribe.html' %}
+        {% else %}
+          {% include 'includes/buttons/subscribe.html' %}
+        {% endif %}
+      {% endif %}
+    </div>
+</div>

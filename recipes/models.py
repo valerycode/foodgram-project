@@ -31,6 +31,14 @@ class Tag(models.Model):
         return f'{self.name}'
 
 
+class RecipeManager(models.Manager):
+    @staticmethod
+    def tag_filter(tags):
+        if tags:
+            return Recipe.objects.filter(tags__slug__in=tags).distinct()
+        return Recipe.objects.all()
+
+
 class Recipe(models.Model):
     """Рецепты"""
 
@@ -53,6 +61,7 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField(verbose_name='дата публикации',
                                     auto_now_add=True,
                                     db_index=True)
+    objects = RecipeManager()
 
     class Meta:
         verbose_name = 'Рецепт'
@@ -86,7 +95,9 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, related_name='recipe_ingredients', on_delete=models.CASCADE
+    )
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 

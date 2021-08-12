@@ -1,21 +1,57 @@
 <!doctype html>
+{% load static %}
 <html>
 <head>
+    <title>Продуктовый помощник</title>
+    <link rel="shortcut icon" type="image/png"
+          href="{% static 'images\favicon.ico' %}"/>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
       {% block title %}
         Надпись сверху
       {% endblock %}
     </title>
+    {% block static %}{% endblock %}
 </head>
   <body>
     {% include 'includes/header.html' %}
     <main class="container">
+      <div class="main__header">
+        <h1 class="main__title">{% block main_title %}{% endblock %}</h1>
+      </div>
       {% block content %}
         <!-- Содержимое страницы -->
       {% endblock content %}
     </main>
     {% include 'includes/footer.html' %}
+    {% block js %}
+      <script src="{% static 'js/api/Api.js' %}"></script>
+      <script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
+      <script src="{% static 'js/components/CardList.js' %}"></script>
+      <script src="{% static 'js/components/Favorites.js' %}"></script>
+      <script src="{% static 'js/components/Header.js' %}"></script>
+      <script src="{% static 'js/components/MainCards.js' %}"></script>
+      <script src="{% static 'js/components/MyFollow.js' %}"></script>
+      <script src="{% static 'js/components/Purchases.js' %}"></script>
+      <script src="{% static 'js/components/ShopList.js' %}"></script>
+      <script src="{% static 'js/components/SingleCard.js' %}"></script>
+      <script src="{% static 'js/components/Subscribe.js' %}"></script>
+      <script src="{% static 'js/components/Throttle.js' %}"></script>
+      <script src="{% static 'js/config/config.js' %}"></script>
+      <script src="{% static 'js/dom/dom.js' %}"></script>
+      <script src="{% static 'js/utils/debouncing.js' %}"></script>
+      <script src="{% static 'js/authorRecipe.js' %}"></script>
+      <script src="{% static 'js/favorite.js' %}"></script>
+      <script src="{% static 'js/formRecipe.js' %}"></script>
+      <script src="{% static 'js/indexAuth.js' %}"></script>
+      <script src="{% static 'js/indexNotAuth.js' %}"></script>
+      <script src="{% static 'js/myFollow.js' %}"></script>
+      <script src="{% static 'js/shopList.js' %}"></script>
+      <script src="{% static 'js/singlePage.js' %}"></script>
+      <script src="{% static 'js/singlePageNotAuth.js' %}"></script>
+  {% endblock %}
   </body>
 </html>

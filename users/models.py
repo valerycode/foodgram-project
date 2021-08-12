@@ -6,6 +6,15 @@ from recipes.models import Recipe
 User = get_user_model()
 
 
+class SubscriptionManager(models.Manager):
+    @staticmethod
+    def subscriptions(user):
+        author_id = Subscription.objects.filter(
+            user=user).values_list('author', flat=True)
+        subscriptions_list = User.objects.filter(pk__in=author_id)
+        return subscriptions_list
+
+
 class Subscription(models.Model):
     """ Подписка """
 
@@ -15,6 +24,7 @@ class Subscription(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='subscribed_by',
                                verbose_name='Автор')
+    objects = SubscriptionManager()
 
     def __str__(self):
         return f'Подписка{self.user} на {self.author}'
@@ -23,6 +33,16 @@ class Subscription(models.Model):
         unique_together = ['user', 'author']
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+
+
+class FavoriteManager(models.Manager):
+    @staticmethod
+    def favorite_recipe(user, tags):
+        recipes_id = Favorite.objects.filter(
+            user=user).values_list('recipe', flat=True)
+        favorite_list = Recipe.objects.tag_filter(tags).filter(
+            pk__in=recipes_id)
+        return favorite_list
 
 
 class Favorite(models.Model):
@@ -34,6 +54,7 @@ class Favorite(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="favorite_recipe"
     )
+    objects = FavoriteManager()
 
     class Meta:
         unique_together = ["user", "recipe"]

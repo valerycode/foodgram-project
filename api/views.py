@@ -22,16 +22,16 @@ CreateListDeleteGeneric = (mixins.DestroyModelMixin, mixins.CreateModelMixin,
 class PurchasesViewSet(*CreateListDeleteGeneric):
     queryset = Purchases.objects.all()
     serializer_class = PurchasesSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
 
 class SubscriptionViewSet(mixins.CreateModelMixin,
                           mixins.DestroyModelMixin,
-                          mixins.ListModelMixin,#для теста
+                          mixins.ListModelMixin,
                           viewsets.GenericViewSet):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return get_object_or_404(
@@ -43,17 +43,17 @@ class SubscriptionViewSet(mixins.CreateModelMixin,
 
 class FavoriteViewSet(mixins.CreateModelMixin,
                       mixins.DestroyModelMixin,
-                      mixins.RetrieveModelMixin, #для теста
-                      mixins.ListModelMixin, #для теста
+                      mixins.ListModelMixin,
                       viewsets.GenericViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoritesSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
 
 class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    permission_classes = (IsAuthenticated,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('^title',)
+    permission_classes = [AllowAny]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
+    # search_fields = ('^title',)

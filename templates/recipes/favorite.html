@@ -9,8 +9,8 @@
         {% include 'includes/tags.html' %}
     </div>
     <div class="card-list">
-      {% for recipe in recipes %}
-        {% include 'includes/recipe_card_short' %}
+      {% for recipe in page %}
+        {% include 'recipes/includes/recipe_card_short.html' %}
       {% endfor %}
     </div>
 {% endblock %}

@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
+from django.db.models import Sum
+from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView
@@ -28,40 +30,28 @@ class UserPasswordReset(PasswordResetView):
 
 @login_required
 def subscriptions_list(request):
-    user_subscriptions = Subscription.objects.filter(user=request.user)
+    user_subscriptions = Subscription.objects.subscriptions(user=request.user)
     paginator = Paginator(user_subscriptions, settings.RECIPES_ON_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    if page:
-        return render(request, 'recipes/subscriptions.html', {
-            'page': page,
-            'paginator': paginator,
-        })
-    return render(request, 'recipes/custom_page.html')
+    context = {
+        'page': page,
+        'paginator': paginator,
+    }
+    return render(request, 'recipes/subscriptions.html', context=context)
 
 
 @login_required
 def favorite_recipe(request):
-    user = get_object_or_404(User, username=request.user)
-    recipes = Favorite.objects.prefetch_related(
-        '"favorite__tag', 'favorite_subscriber'
-    ).filter(user=user)
-    tags = request.GET.getlist('tags')
-    if tags:
-        recipes = Favorite.objects.filter(
-            favorite__tag__slug__in=tags, user=user).distinct()
-    all_tags = Tag.objects.all()
-    paginator = Paginator(recipes, settings.RECIPES_ON_PAGE)
+    tags = request.GET.getlist('tag')
+    favorite_list = Favorite.objects.favorite_recipe(request.user, tags)
+    paginator = Paginator(favorite_list, settings.RECIPES_ON_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-
-    context = {
-        'page': page,
-        'paginator': paginator,
-        'all_tags': all_tags,
-
-        }
-    return render(request, 'recipes/favorite.html', context=context)
+    return render(request, 'recipes/favorite.html', {
+            'page': page,
+            'paginator': paginator,
+        })
 
 
 @login_required
@@ -76,17 +66,37 @@ def purchases_list(request):
     return render(request, 'recipes/purchases.html', context=context)
 
 
-def author_recipes(request, username):
-    tags = request.GET.getlist('tags')
+@login_required
+def download_purchases(request):
+    recipes = Recipe.objects.filter(purchases_recipe__user=request.user)
+    ingredients = recipes.values(
+        'ingredients__title', 'ingredients__dimension',
+    ).annotate(
+        Sum('recipe_ingredients__amount')).order_by()
+
+    content = ''
+
+    for item in ingredients:
+        right_position_item = (
+            item.get('ingredients__title'),
+            str(item.get('recipe_ingredients__amount__sum')),
+            item.get('ingredients__dimension')
+        )
+        content += ' '.join(right_position_item) + '\n'
+
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=shopping-list.txt'
+    return response
+
+
+def author_profile(request, username):
+    tags = request.GET.getlist('tag')
     author = get_object_or_404(User, username=username)
-    recipes = author.author_recipes.all()
-    if tags:
-        recipes = Recipe.objects.filter(
-            tag__slug__in=tags, author=author).distinct()
-    paginator = Paginator(recipes, settings.RECIPES_ON_PAGE)
+    post_list = Recipe.objects.tag_filter(tags).filter(author=author)
+    paginator = Paginator(post_list, settings.RECIPES_ON_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'recipes/author_recipes.html', {
+    return render(request, 'recipes/author_profile.html', {
         'author': author,
         'page': page,
         'paginator': paginator,

@@ -4,18 +4,21 @@ from django.core.paginator import Paginator
 
 from foodgram import settings
 
+from pytils.translit import slugify
+
 from .models import Ingredient, Recipe, RecipeIngredient, Tag
 from .forms import RecipeForm
 
 
 def index(request):
-    recipes_list = Recipe.objects.all()
-    paginator = Paginator(recipes_list, settings.RECIPES_ON_PAGE)
+    tags = request.GET.getlist('tag')
+    recipe_list = Recipe.objects.tag_filter(tags)
+    paginator = Paginator(recipe_list, settings.RECIPES_ON_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, "recipes/index.html", {
-        "page": page,
-        "paginator": paginator,
+    return render(request, 'recipes/index.html', {
+        'page': page,
+        'paginator': paginator,
     })
 
 
@@ -29,17 +32,25 @@ def new_recipe(request):
             {"form": form})
     recipe = form.save(commit=False)
     recipe.author = request.user
+    recipe.slug = slugify(recipe.name)
     recipe.save()
-    return redirect("index")
+    return redirect("recipes:index")
 
 
 def recipe_view(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    form = RecipeForm()
-    return render(request, 'recipes/includes/recipe_card.html', {
+    ingredients = recipe.recipe_ingredients.select_related().all()
+
+    context = {
         'recipe': recipe,
-        'form': form,
-    })
+        'ingredients': ingredients,
+        'id': recipe_id
+    }
+    return render(
+        request,
+        'recipes/includes/recipe_card.html',
+        context=context
+    )
 
 
 @login_required()
@@ -54,8 +65,8 @@ def recipe_edit(request, recipe_id):
     )
     if form.is_valid():
         form.save()
-        return redirect("recipe_view", recipe_id)
-    return render(request, "recipes/create_or_edit_recipe.html", {
+        return redirect('recipes:recipe_view', recipe_id)
+    return render(request, 'recipes/create_or_edit_recipe.html', {
         "form": form,
         "recipe": recipe,
     })
@@ -65,7 +76,6 @@ def recipe_edit(request, recipe_id):
 def recipe_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, recipe_id)
     if recipe.author != request.user:
-        return redirect('recipe_view', recipe_id)
+        return redirect('recipes/recipe_view', recipe_id)
     recipe.delete()
     return redirect('index')
-

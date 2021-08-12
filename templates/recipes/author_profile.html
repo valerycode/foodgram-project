@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% load user_filters %}
+{% block title %}
+  {{ author.get_full_name|default:author.username }}
+{% endblock %}
+{% block static %}
+  <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+{% block content %}
+  <main class="main container">
+    <div class="main__header">
+      <h1 class="main__title">{{ author.get_full_name|default:author.username }}</h1>
+      {% include 'includes/tags.html' %}
+    </div>
+    <div class="author-subscribe" data-author="{{ author.id }}">
+      {% if request.user.is_authenticated and request.user != author %}
+        <p style="padding: 0 0 2em 0;">
+          {% if author|has_subscription:user %}
+              {% include 'includes/buttons/unsubscribe.html' %}
+          {% else %}
+              {% include 'includes/buttons/subscribe.html' %}
+          {% endif %}
+          </p>
+      {% endif %}
+    </div>
+    {% if page %}
+      <div class="card-list">
+        {% for recipe in page %}
+          {% include 'recipes/includes/recipe_card_short.html' %}
+        {% endfor %}
+      </div>
+      {% include 'includes/paginator.html' with items=page paginator=paginator %}
+    {% else %}
+      <div class="custom-center-block">
+        <p class="custom-text-block">Здесь пока что нет рецептов :-(</p>
+        <div class="custom-button-block">
+          {% include 'buttons/to-main-page.html' %}
+        </div>
+      </div>
+    {% endif %}
+  </main>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/components/MainCards.js' %}"></script>
+  <script src="{% static 'js/components/Purchases.js' %}"></script>
+  <script src="{% static 'js/components/Favorites.js' %}"></script>
+  <script src="{% static 'js/components/Subscribe.js' %}"></script>
+  <script src="{% static 'js/config/config.js' %}"></script>
+  <script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
+  <script src="{% static 'js/components/Header.js' %}"></script>
+  <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'js/authorRecipe.js' %}"></script>
+{% endblock %}

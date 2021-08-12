@@ -1,26 +1,25 @@
-{% extends 'base.html' %}
-{% block title %}Рецепты{% endblock title %}
-{% block content %}
+{% extends "base.html" %}
 {% load static %}
+{% load recipe_filters %}
+{% block title %}
+ Рецепты
+{% endblock %}
+{% block static %}
   <link rel="stylesheet" href="{% static 'pages/index.css' %}">
-  <div class="main__header">
-    <h1 class="main__title">Рецепты</h1>
+{% endblock %}
+{% block content %}
+  <main class="main container">
+    <div class="main__header">
+      <h1 class="main__title">Рецепты</h1>
       {% include 'includes/tags.html' %}
-  </div>
-{% block additional_under_header %}{% endblock %}
-  <div class="card-list">
-    {% load cache %}
-    {% cache 20 sidebar %}
+    </div>
+    <div class="card-list">
       {% for recipe in page %}
-        {% include 'recipes/includes/recipe_card_short.html' with recipe=recipe %}
+        {% include 'recipes/includes/recipe_card_short.html' %}
       {% endfor %}
-    {% endcache %}
-    {% if page.has_other_pages %}
-      <ul class="pagination justify-content-center">
-        {% include 'includes/paginator.html' with aria_label='Search results pages' %}
-      </ul>
-    {% endif %}
-  </div>
+    </div>
+      {% include 'includes/paginator.html' with items=page paginator=paginator %}
+  </main>
 {% endblock %}
 {% block js %}
   <script src="{% static 'js/components/MainCards.js' %}"></script>

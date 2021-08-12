@@ -23,6 +23,6 @@ def has_subscription(author_id, user):
 
 
 @register.filter
-def in_purchases(recipe, user):
+def in_purchases(recipe_id, user):
     """Проверяет добавлен ли рецепт в список покупок"""
-    return Purchases.objects.filter(user=user, recipe=recipe).exists()
+    return Purchases.objects.filter(user=user, recipe=recipe_id).exists()
