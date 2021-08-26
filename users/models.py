@@ -33,6 +33,7 @@ class Subscription(models.Model):
         unique_together = ['user', 'author']
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
+        ordering = ['author']
 
 
 class FavoriteManager(models.Manager):

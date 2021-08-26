@@ -114,13 +114,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# if DEBUG:
-#     STATICFILES_DIRS = [
-#         os.path.join(BASE_DIR, 'static')
-#     ]
-#
-# else:
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static')
+    ]
+
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -135,3 +135,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_USER')
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER
+PURCHASE_SESSION_ID = 'purchases'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = 'recipes:index'
+LOGOUT_REDIRECT_URL = 'recipes:index'

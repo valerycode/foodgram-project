@@ -11,10 +11,18 @@ handler404 = "foodgram.views.page_not_found" # noqa
 handler500 = "foodgram.views.server_error" # noqa
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('api.urls', namespace='api')),
-    path('auth/', include('users.urls')),
-    path('auth/', include('django.contrib.auth.urls')),
+    path("404/",
+         page_not_found,
+         name="Error_404"),
+    path("500/",
+         server_error,
+         name="Error_500"),
+    path('admin/',
+         admin.site.urls),
+    path('auth/',
+         include('users.urls')),
+    path('auth/',
+         include('django.contrib.auth.urls')),
     path("about-author/",
          views.flatpage,
          {"url": "/about-author/"},
@@ -27,9 +35,10 @@ urlpatterns = [
          views.flatpage,
          {"url": "/about-spec/"},
          name="about-spec"),
-    path("404/", page_not_found, name="Error_404"),
-    path("500/", server_error, name="Error_500"),
-    path('', include('recipes.urls')),
+    path('api/',
+         include('api.urls', namespace='api')),
+    path('',
+         include('recipes.urls')),
 ]
 if settings.DEBUG:
     import debug_toolbar

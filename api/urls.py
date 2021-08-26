@@ -7,11 +7,24 @@ from api.views import (FavoriteViewSet, IngredientViewSet,
 app_name = 'api'
 
 v1_router = DefaultRouter()
-v1_router.register(r'ingredients', IngredientViewSet, basename='ingredients')
-v1_router.register(r'favorites', FavoriteViewSet, basename='favorites')
-v1_router.register(r'purchases', PurchasesViewSet, basename='purchases')
-v1_router.register(r'subscriptions', SubscriptionViewSet,
-                   basename='subscriptions')
+v1_router.register(
+    "ingredients",
+    IngredientViewSet,
+    basename="ingredients")
+v1_router.register(
+    "favorites",
+    FavoriteViewSet,
+    basename="favorites")
+v1_router.register(
+    "purchases",
+    PurchasesViewSet,
+    basename="purchases")
+v1_router.register(
+    "subscriptions",
+    SubscriptionViewSet,
+    basename="subscriptions")
+
+
 urlpatterns = [
     path('v1/', include(v1_router.urls)),
 ]

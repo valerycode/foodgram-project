@@ -44,7 +44,6 @@ def recipe_view(request, recipe_id):
     context = {
         'recipe': recipe,
         'ingredients': ingredients,
-        'id': recipe_id
     }
     return render(
         request,
@@ -57,7 +56,7 @@ def recipe_view(request, recipe_id):
 def recipe_edit(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     if request.user != recipe.author:
-        return redirect('index')
+        return redirect('recipes:index')
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None,
@@ -65,7 +64,7 @@ def recipe_edit(request, recipe_id):
     )
     if form.is_valid():
         form.save()
-        return redirect('recipes:recipe_view', recipe_id)
+        return redirect('recipes:recipe-view', recipe_id)
     return render(request, 'recipes/create_or_edit_recipe.html', {
         "form": form,
         "recipe": recipe,
@@ -74,8 +73,8 @@ def recipe_edit(request, recipe_id):
 
 @login_required
 def recipe_delete(request, recipe_id):
-    recipe = get_object_or_404(Recipe, recipe_id)
+    recipe = get_object_or_404(Recipe, id=recipe_id)
     if recipe.author != request.user:
-        return redirect('recipes/recipe_view', recipe_id)
+        return redirect('recipes:recipe-view', recipe_id)
     recipe.delete()
-    return redirect('index')
+    return redirect('recipes:index')
