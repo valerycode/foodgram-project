@@ -4,7 +4,7 @@
 {% csrf_token %}
 <div class="card" data-id="{{ recipe.id }}">
   {% thumbnail recipe.image "360x240" crop="center" as im %}
-    <a href="{% url 'recipes:recipe-view' recipe.id %}" class="link" target="_blank">
+    <a href="{% url 'recipes:recipe-view' recipe.id %}" class="link">
       <img src="{{ im.url }}"
            width="{{ im.width }}"
            height="{{ im.height }}"
@@ -12,8 +12,7 @@
            class="card__image"></a>
   {% endthumbnail %}
   <div class="card__body">
-    <a class="card__title link" href="{% url 'recipes:recipe-view' recipe.id %}"
-       target="_blank">{{ recipe.name }}</a>
+    <a class="card__title link" href="{% url 'recipes:recipe-view' recipe.id %}">{{ recipe.name }}</a>
     <ul class="card__items">
       {% for tag in recipe.tags.all %}
         <li class="single-card__item">

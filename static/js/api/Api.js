@@ -83,7 +83,7 @@ class Api {
       })
   }
   addFavorites (id)  {
-    return fetch(`api/v1/favorites/`, {
+    return fetch(`/api/v1/favorites/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ class Api {
         })
   }
     getIngredients  (text)  {
-        return fetch(`api/v1/ingredients/?query=${text}`, {
+        return fetch(`/api/v1/ingredients/?query=${text}`, {
             headers: {
                 'Content-Type': 'application/json',
             }

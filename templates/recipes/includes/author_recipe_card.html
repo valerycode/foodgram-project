@@ -14,7 +14,7 @@
                   {% load thumbnail %}
                     {% thumbnail recipe.image "72x72" crop="center" upscale=True as im %}
                       <a href="{% url 'recipes:recipe-view' recipe.id %}"
-                         class="link" target="_blank">
+                         class="link">
                          <img src="{{ im.url }}"
                               width="{{ im.width }}"
                               height="{{ im.height }}"

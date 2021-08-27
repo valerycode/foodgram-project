@@ -3,7 +3,7 @@
     <div class="recipe recipe_reverse">
       {% thumbnail purchase.recipe.image '100x100' crop='center' as im %}
         <a href="{% url 'recipes:recipe-view' purchase.recipe.id %}"
-           class="link" target="_blank">
+           class="link">
            <img src="{{ im.url }}"
                 width="{{ im.width }}"
                 height="{{ im.height }}"
