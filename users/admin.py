@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 from .models import Favorite, Purchases, Subscription
 
@@ -19,3 +21,12 @@ class PurchasesAdmin(admin.ModelAdmin):
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'author', )
     list_filter = ('user', 'author', )
+
+
+class UserAdminCustom(UserAdmin):
+    list_filter = ("username", "email")
+    search_fields = ("username", "email")
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdminCustom)

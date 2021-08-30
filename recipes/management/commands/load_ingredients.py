@@ -15,6 +15,6 @@ class Command(BaseCommand):
         with open(path[0]) as file:
             for item in json.load(file):
                 Ingredient.objects.get_or_create(
-                    name=item['title'],
-                    unit=item['dimension']
+                    title=item['title'],
+                    dimension=item['dimension']
                 )

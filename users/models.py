@@ -50,11 +50,14 @@ class Favorite(models.Model):
     """Избранные рецепты пользователя"""
 
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="favorite_subscriber"
+        User, on_delete=models.CASCADE,
+        related_name="favorite_subscriber",
+        verbose_name='Пользователь'
     )
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name="favorite_recipe"
-    )
+        Recipe, on_delete=models.CASCADE,
+        related_name="favorite_recipe",
+        verbose_name='Рецепт')
     objects = FavoriteManager()
 
     class Meta:
@@ -70,9 +73,15 @@ class Purchases(models.Model):
     """Список покупок"""
 
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="purchases_subscriber")
+        User, on_delete=models.CASCADE,
+        related_name="purchases_subscriber",
+        verbose_name='Пользователь'
+    )
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name="purchases_recipe")
+        Recipe, on_delete=models.CASCADE,
+        related_name="purchases_recipe",
+        verbose_name='Рецепт'
+    )
 
     class Meta:
         verbose_name = 'Список покупок'

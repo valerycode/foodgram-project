@@ -6,10 +6,6 @@ from django.db import models
 User = get_user_model()
 
 
-class IngredientUnit(models.TextChoices):
-    GRAM = 'GRAM', 'г.'
-
-
 class Tag(models.Model):
     """Теги"""
 
@@ -48,13 +44,12 @@ class Recipe(models.Model):
         verbose_name='Название',
         max_length=256,
     )
-    image = models.ImageField('Картинка', upload_to='recipes/',
-                              blank=True, null=True)
+    image = models.ImageField('Картинка', upload_to='recipes/')
     description = models.TextField('Описание')
     ingredients = models.ManyToManyField(through='RecipeIngredient',
-                                         to='Ingredient', blank=True)
+                                         to='Ingredient')
     tags = models.ManyToManyField(Tag, related_name='recipes',
-                                  blank=True, verbose_name='теги')
+                                  verbose_name='теги')
     cooking_time = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)], verbose_name='время приготовления')
     slug = models.SlugField(max_length=160, unique=True)
