@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
 
 from foodgram import settings
 
-from .models import Ingredient, Recipe, RecipeIngredient, Tag
+from .models import Recipe
 from .forms import RecipeForm
 
 
@@ -39,7 +39,6 @@ def new_recipe(request):
 def recipe_view(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     ingredients = recipe.recipe_ingredients.select_related().all()
-
     context = {
         'recipe': recipe,
         'ingredients': ingredients,

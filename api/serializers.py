@@ -16,7 +16,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class PurchasesSerializer(serializers.ModelSerializer):
-    # recipe = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Purchases
@@ -24,14 +23,6 @@ class PurchasesSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    # user = serializers.SlugRelatedField(
-    #     read_only=True,
-    #     slug_field='username'
-    #  )
-    # author = serializers.SlugRelatedField(
-    #     read_only=True,
-    #     slug_field='username'
-    #  )
 
     class Meta:
         model = Subscription
@@ -42,7 +33,6 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        # fields = ('name',)
         fields = '__all__'
 
 

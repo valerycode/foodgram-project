@@ -10,9 +10,9 @@ from django.urls import reverse_lazy
 
 from foodgram import settings
 
-from recipes.models import Recipe, Tag
+from recipes.models import Recipe
 
-from .models import Favorite, Purchases, Subscription
+from .models import (Favorite, Purchases, Subscription,)
 from .forms import CreationForm
 
 User = get_user_model()

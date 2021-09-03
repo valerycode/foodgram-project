@@ -26,3 +26,10 @@ def has_subscription(author_id, user):
 def in_purchases(recipe_id, user):
     """Проверяет добавлен ли рецепт в список покупок"""
     return Purchases.objects.filter(user=user, recipe=recipe_id).exists()
+
+
+@register.filter
+def purchases_count(request):
+    """Считает количество добавленных рецептов в список покупок"""
+    if request.user.is_authenticated:
+        return Purchases.objects.filter(user=request.user).count()

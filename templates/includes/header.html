@@ -1,3 +1,4 @@
+{% load user_filters %}
 <header class="header">
   <nav class="nav">
     <div class="nav__container container">
@@ -8,7 +9,7 @@
           <li class="nav__item {% if url_name == 'subscriptions' %} nav__item_active {% endif %}"><a href="{% url 'recipes:user_subscriptions' %}" class="nav__link link">Мои подписки</a></li>
           <li class="nav__item {% if url_name == 'new-recipe' %} nav__item_active {% endif %}"><a href="{% url 'recipes:new-recipe' %}" class="nav__link link">Создать рецепт</a></li>
           <li class="nav__item {% if url_name == 'favorites' %} nav__item_active {% endif %}"><a href="{% url 'recipes:favorite_recipes' %}" class="nav__link link">Избранное</a></li>
-          <li class="nav__item {% if url_name == 'purchases' %} nav__item_active {% endif %}"><a href="{% url 'recipes:purchases_list' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter"></span></li>
+          <li class="nav__item {% if url_name == 'purchases' %} nav__item_active {% endif %}"><a href="{% url 'recipes:purchases_list' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{% if request|purchases_count != 0 %}{{ request|purchases_count }}{% endif %}</span></li>
           {% endif %}
         </ul>
         <ul class="nav__items list">
