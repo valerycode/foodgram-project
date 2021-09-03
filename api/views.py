@@ -5,8 +5,7 @@ from django.http import JsonResponse
 from rest_framework import filters, mixins, viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly,)
+from rest_framework.permissions import (AllowAny, IsAuthenticated,)
 
 from recipes.models import Ingredient, Recipe
 from users.models import Favorite, Purchases, Subscription
@@ -106,4 +105,4 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IngredientSerializer
     permission_classes = [AllowAny]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
+    search_fields = ['^title']

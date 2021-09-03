@@ -7,8 +7,6 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    """Теги"""
-
     name = models.CharField(max_length=50, verbose_name='Тег')
     slug = models.SlugField(max_length=160, unique=True)
     color = models.SlugField(verbose_name='Цвет тега')
@@ -36,8 +34,6 @@ class RecipeManager(models.Manager):
 
 
 class Recipe(models.Model):
-    """Рецепты"""
-
     author = models.ForeignKey(User, related_name='author_recipes',
                                verbose_name='автор', on_delete=models.CASCADE)
     name = models.CharField(
@@ -52,7 +48,6 @@ class Recipe(models.Model):
                                   verbose_name='теги')
     cooking_time = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)], verbose_name='время приготовления')
-    slug = models.SlugField(max_length=160, unique=True)
     pub_date = models.DateTimeField(verbose_name='дата публикации',
                                     auto_now_add=True,
                                     db_index=True)
@@ -68,8 +63,6 @@ class Recipe(models.Model):
 
 
 class Ingredient(models.Model):
-    """Ингредиенты"""
-
     title = models.CharField(
         verbose_name='Название',
         max_length=256,

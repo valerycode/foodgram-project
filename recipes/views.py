@@ -4,8 +4,6 @@ from django.core.paginator import Paginator
 
 from foodgram import settings
 
-from pytils.translit import slugify
-
 from .models import Ingredient, Recipe, RecipeIngredient, Tag
 from .forms import RecipeForm
 
@@ -32,8 +30,9 @@ def new_recipe(request):
             {"form": form})
     recipe = form.save(commit=False)
     recipe.author = request.user
-    recipe.slug = slugify(recipe.name)
     recipe.save()
+    form.save_m2m()
+    form.save_recipe(request, recipe)
     return redirect("recipes:index")
 
 
@@ -55,7 +54,7 @@ def recipe_view(request, recipe_id):
 @login_required()
 def recipe_edit(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    if request.user != recipe.author:
+    if request.user != recipe.author and not request.user.is_superuser:
         return redirect('recipes:index')
     form = RecipeForm(
         request.POST or None,
@@ -64,6 +63,7 @@ def recipe_edit(request, recipe_id):
     )
     if form.is_valid():
         form.save()
+        form.save_recipe(request, recipe)
         return redirect('recipes:recipe-view', recipe_id)
     return render(request, 'recipes/create_or_edit_recipe.html', {
         "form": form,
@@ -74,7 +74,7 @@ def recipe_edit(request, recipe_id):
 @login_required
 def recipe_delete(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    if recipe.author != request.user:
+    if recipe.author != request.user and not request.user.is_superuser:
         return redirect('recipes:recipe-view', recipe_id)
     recipe.delete()
     return redirect('recipes:index')

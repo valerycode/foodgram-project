@@ -41,10 +41,13 @@ class RecipeAdmin(admin.ModelAdmin):
     def favorites_count(self, obj):
         return obj.favorite_recipe.count()
 
+    favorites_count.short_description = "В избранном"
+
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name',)
+    list_display = ("name", "slug",)
+    search_fields = ("name", "slug",)
 
 
 admin.site.site_header = 'Foodgram'
