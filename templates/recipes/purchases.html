@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Список покупок{% endblock %}
-{% block static %}<link rel="stylesheet" href="{% static 'pages/shopList.css' %}">{% endblock %}
+{% block title %}
+  Список покупок
+{% endblock %}
+{% block static %}
+  <link rel="stylesheet" href="{% static 'pages/shopList.css' %}">
+{% endblock %}
 {% block content %}
   {% csrf_token %}
     <main class="main container">

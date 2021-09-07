@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from rest_framework import fields, serializers
+from rest_framework import serializers
 
 from recipes.models import Ingredient, Recipe
 from users.models import Favorite, Purchases, Subscription

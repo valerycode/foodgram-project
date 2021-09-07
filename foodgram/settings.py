@@ -6,12 +6,10 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# DEBUG = os.getenv('DEBUG') == 'true'
 DEBUG = True
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -135,7 +133,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_USER')
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER
-# PURCHASE_SESSION_ID = 'purchases'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'recipes:index'
 LOGOUT_REDIRECT_URL = 'recipes:index'

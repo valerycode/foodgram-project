@@ -24,7 +24,6 @@ v1_router.register(
     SubscriptionViewSet,
     basename="subscriptions")
 
-
 urlpatterns = [
     path('v1/', include(v1_router.urls)),
 ]

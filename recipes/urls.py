@@ -1,7 +1,7 @@
 from django.urls import path
 
-from users.views import (download_purchases, purchases_list,
-                         favorite_recipe, author_profile, subscriptions_list)
+from users.views import (download_purchases, purchases, favorite_recipe,
+                         author_profile, subscriptions_list)
 
 from . import views
 
@@ -18,7 +18,7 @@ urlpatterns = [
          views.new_recipe,
          name='new-recipe'),
     path('purchase/',
-         purchases_list,
+         purchases,
          name='purchases_list'),
     path('purchases-download/',
          download_purchases,

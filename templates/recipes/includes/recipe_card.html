@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load user_filters %}
-{% block static %}<link rel="stylesheet" href="{% static 'pages/single.css' %}">{% endblock %}
+{% block static %}
+  <link rel="stylesheet" href="{% static 'pages/single.css' %}">
+{% endblock %}
 {% block content %}
   <main class="main container">
     <div class="single-card" data-id="{{ recipe.id }}"{% if user.is_authenticated %}data-author="{{ recipe.author.id }}"{% endif %}>

@@ -1,19 +1,18 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
+from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponse
-from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from foodgram import settings
-
 from recipes.models import Recipe
 
-from .models import (Favorite, Purchases, Subscription,)
 from .forms import CreationForm
+from .models import Favorite, Purchases, Subscription
 
 User = get_user_model()
 
@@ -55,7 +54,7 @@ def favorite_recipe(request):
 
 
 @login_required
-def purchases_list(request):
+def purchases(request):
     purchases_list = Purchases.objects.select_related(
         'recipe').filter(
         user=request.user.id
