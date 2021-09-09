@@ -2,7 +2,6 @@ from django.urls import path
 
 from users.views import (download_purchases, purchases, favorite_recipe,
                          author_profile, subscriptions_list)
-
 from . import views
 
 app_name = 'recipes'

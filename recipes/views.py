@@ -3,7 +3,6 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
 from foodgram import settings
-
 from .models import Recipe
 from .forms import RecipeForm
 

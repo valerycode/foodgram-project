@@ -10,9 +10,8 @@ from django.views.generic import CreateView
 
 from foodgram import settings
 from recipes.models import Recipe
-
 from .forms import CreationForm
-from .models import Favorite, Purchases, Subscription
+from .models import Favorite, Purchase, Subscription
 
 User = get_user_model()
 
@@ -55,7 +54,7 @@ def favorite_recipe(request):
 
 @login_required
 def purchases(request):
-    purchases_list = Purchases.objects.select_related(
+    purchases_list = Purchase.objects.select_related(
         'recipe').filter(
         user=request.user.id
     )

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import (Favorite, Purchases, Subscription,)
+from .models import (Favorite, Purchase, Subscription, )
 
 
 @admin.register(Favorite)
@@ -11,8 +11,8 @@ class FavoriteRecipeAdmin(admin.ModelAdmin):
     list_filter = ('user', 'recipe', )
 
 
-@admin.register(Purchases)
-class PurchasesAdmin(admin.ModelAdmin):
+@admin.register(Purchase)
+class PurchaseAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe', )
     list_filter = ('user', 'recipe', )
 

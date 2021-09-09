@@ -1,6 +1,6 @@
 from django import template
 
-from users.models import Favorite, Purchases, Subscription
+from users.models import Favorite, Purchase, Subscription
 
 register = template.Library()
 
@@ -25,11 +25,11 @@ def has_subscription(author_id, user):
 @register.filter
 def in_purchases(recipe_id, user):
     """Проверяет добавлен ли рецепт в список покупок"""
-    return Purchases.objects.filter(user=user, recipe=recipe_id).exists()
+    return Purchase.objects.filter(user=user, recipe=recipe_id).exists()
 
 
 @register.filter
 def purchases_count(request):
     """Считает количество добавленных рецептов в список покупок"""
     if request.user.is_authenticated:
-        return Purchases.objects.filter(user=request.user).count()
+        return Purchase.objects.filter(user=request.user).count()

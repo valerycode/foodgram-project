@@ -1,76 +1,41 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-
-from rest_framework import filters, mixins, viewsets
-from rest_framework import status
-
+from rest_framework import filters, mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import (AllowAny, IsAuthenticated,)
 
 from recipes.models import Ingredient, Recipe
-from users.models import Favorite, Purchases, Subscription
-
+from users.models import Favorite, Purchase, Subscription
 from .serializers import (IngredientSerializer,
-                          PurchasesSerializer,
+                          PurchaseSerializer,
                           SubscriptionSerializer,
-                          FavoritesSerializer)
+                          FavoriteSerializer)
 
 User = get_user_model()
 
-CreateDeleteGeneric = (mixins.DestroyModelMixin, mixins.CreateModelMixin,
-                       viewsets.GenericViewSet)
 
-
-class CreateListDeleteGeneric(mixins.DestroyModelMixin,
-                              mixins.CreateModelMixin,
-                              mixins.ListModelMixin,
-                              viewsets.GenericViewSet):
-
+class CreateDeleteGeneric(mixins.DestroyModelMixin,
+                          mixins.CreateModelMixin,
+                          viewsets.GenericViewSet):
     def create(self, request, *args, **kwargs):
-        recipe = get_object_or_404(Recipe, pk=request.data["id"])
-        data = {
-            'user': request.user.id,
-            'recipe': recipe.id,
-        }
-        request.data.update(data)
-        return super().create(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return JsonResponse(
-            data={'success': True},
-            status=status.HTTP_200_OK
-        )
-
-
-class PurchasesViewSet(CreateListDeleteGeneric):
-    queryset = Purchases.objects.all()
-    serializer_class = PurchasesSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return get_object_or_404(
-            Purchases.objects.all(),
-            user=self.request.user,
-            recipe__id=self.kwargs.get('pk')
-        )
-
-
-class SubscriptionViewSet(*CreateDeleteGeneric):
-    queryset = Subscription.objects.all()
-    serializer_class = SubscriptionSerializer
-    permission_classes = [IsAuthenticated]
-
-    def create(self, request, *args, **kwargs):
-        author = get_object_or_404(User, pk=request.data["id"])
-        data = {
-            'user': request.user.id,
-            'author': author.id,
-        }
-        request.data.update(data)
-        return super().create(request, *args, **kwargs)
+        data = {}
+        if self.lookup_field == "recipe":
+            recipe = get_object_or_404(Recipe, pk=request.data["id"])
+            data = {
+                'user': request.user.id,
+                'recipe': recipe.id,
+            }
+        elif self.lookup_field == "author":
+            author = get_object_or_404(User, pk=request.data["id"])
+            data = {
+                'user': request.user.id,
+                'author': author.id,
+            }
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return JsonResponse({"success": True}, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -80,25 +45,26 @@ class SubscriptionViewSet(*CreateDeleteGeneric):
             status=status.HTTP_200_OK
         )
 
-    def get_object(self):
-        return get_object_or_404(
-            Subscription.objects.all(),
-            user=self.request.user,
-            author__id=self.kwargs.get('pk')
-        )
 
-
-class FavoriteViewSet(CreateListDeleteGeneric):
-    queryset = Favorite.objects.all()
-    serializer_class = FavoritesSerializer
+class PurchaseViewSet(CreateDeleteGeneric, mixins.ListModelMixin):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = 'recipe'
 
-    def get_object(self):
-        return get_object_or_404(
-            Favorite.objects.all(),
-            user=self.request.user,
-            recipe__id=self.kwargs.get('pk')
-        )
+
+class SubscriptionViewSet(CreateDeleteGeneric):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'author'
+
+
+class FavoriteViewSet(CreateDeleteGeneric, mixins.ListModelMixin):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'recipe'
 
 
 class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

@@ -128,7 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
 media/**
 
 .DS_Store
+
+/shelf/
+/workspace.xml

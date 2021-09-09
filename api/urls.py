@@ -3,7 +3,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from api.views import (FavoriteViewSet, IngredientViewSet,
-                       PurchasesViewSet, SubscriptionViewSet)
+                       PurchaseViewSet, SubscriptionViewSet)
 app_name = 'api'
 
 v1_router = DefaultRouter()
@@ -17,7 +17,7 @@ v1_router.register(
     basename="favorites")
 v1_router.register(
     "purchases",
-    PurchasesViewSet,
+    PurchaseViewSet,
     basename="purchases")
 v1_router.register(
     "subscriptions",
