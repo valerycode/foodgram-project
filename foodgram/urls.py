@@ -5,18 +5,10 @@ from django.contrib import admin
 from django.contrib.flatpages import views
 from django.urls import include, path
 
-from .views import page_not_found, server_error
-
 handler404 = "foodgram.views.page_not_found" # noqa
 handler500 = "foodgram.views.server_error" # noqa
 
 urlpatterns = [
-    path("404/",
-         page_not_found,
-         name="Error_404"),
-    path("500/",
-         server_error,
-         name="Error_500"),
     path('admin/',
          admin.site.urls),
     path('auth/',
