@@ -16,8 +16,6 @@ class SubscriptionManager(models.Manager):
 
 
 class Subscription(models.Model):
-    """ Подписка """
-
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='subscribed_to',
                              verbose_name='Подписчик')
@@ -30,10 +28,19 @@ class Subscription(models.Model):
         return f'Подписка{self.user} на {self.author}'
 
     class Meta:
-        unique_together = ['user', 'author']
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         ordering = ['author']
+        constraints = [
+            models.CheckConstraint(
+                check=~models.Q(user=models.F("author")),
+                name='user_is_not_author',
+            ),
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_subscription',
+            )
+        ]
 
 
 class FavoriteManager(models.Manager):
@@ -47,8 +54,6 @@ class FavoriteManager(models.Manager):
 
 
 class Favorite(models.Model):
-    """Избранные рецепты пользователя"""
-
     user = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name="favorite_subscriber",
@@ -61,17 +66,18 @@ class Favorite(models.Model):
     objects = FavoriteManager()
 
     class Meta:
-        unique_together = ["user", "recipe"]
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'],
+                                    name='unique_recipe_in_favorites'
+                                    )]
 
     def __str__(self):
         return f"{self.user}-{self.recipe}"
 
 
-class Purchases(models.Model):
-    """Список покупок"""
-
+class Purchase(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name="purchases_subscriber",
