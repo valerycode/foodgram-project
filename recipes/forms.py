@@ -41,6 +41,7 @@ class RecipeForm(forms.ModelForm):
     def clean(self):
         tags_added = None
         ingredients_added = None
+        ingredients = {}
         for key in self.data.keys():
             if 'valueIngredient' in key:
                 if int(self.data[key]) <= 0:
@@ -49,6 +50,11 @@ class RecipeForm(forms.ModelForm):
                         'Количество ингредиента должно быть больше 0')
             if 'nameIngredient' in key:
                 ingredients_added = True
+                ingredients.setdefault(self.data[key], 0)
+                ingredients[self.data[key]] += 1
+                if ingredients[self.data[key]] > 1:
+                    self.add_error('ingredients',
+                                   'Удалите повторяющиеся ингредиенты')
                 if not Ingredient.objects.filter(
                         title=self.data[key]).exists():
                     self.add_error('ingredients',

@@ -134,3 +134,6 @@ media/**
 
 /shelf/
 /workspace.xml
+*.iml
+.idea
+out
