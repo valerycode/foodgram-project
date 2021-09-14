@@ -19,6 +19,10 @@ class CreateDeleteGeneric(mixins.DestroyModelMixin,
                           mixins.CreateModelMixin,
                           viewsets.GenericViewSet):
     def create(self, request, *args, **kwargs):
+        if 'id' not in request.data:
+            return Response(
+                {"success": False}, status=status.HTTP_400_BAD_REQUEST,
+                )
         data = {}
         if self.lookup_field == "recipe":
             recipe = get_object_or_404(Recipe, pk=request.data["id"])
