@@ -1,9 +1,9 @@
 from django.urls import include, path
-
 from rest_framework.routers import DefaultRouter
 
-from api.views import (FavoriteViewSet, IngredientViewSet,
-                       PurchaseViewSet, SubscriptionViewSet)
+from api.views import (FavoriteViewSet, IngredientViewSet, PurchaseViewSet,
+                       SubscriptionViewSet)
+
 app_name = 'api'
 
 v1_router = DefaultRouter()

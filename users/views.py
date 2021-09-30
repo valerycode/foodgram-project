@@ -10,6 +10,7 @@ from django.views.generic import CreateView
 
 from foodgram import settings
 from recipes.models import Recipe
+
 from .forms import CreationForm
 from .models import Favorite, Purchase, Subscription
 

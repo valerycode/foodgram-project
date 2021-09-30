@@ -2,15 +2,14 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, mixins, status, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.permissions import (AllowAny, IsAuthenticated,)
 
 from recipes.models import Ingredient, Recipe
 from users.models import Favorite, Purchase, Subscription
-from .serializers import (IngredientSerializer,
-                          PurchaseSerializer,
-                          SubscriptionSerializer,
-                          FavoriteSerializer)
+
+from .serializers import (FavoriteSerializer, IngredientSerializer,
+                          PurchaseSerializer, SubscriptionSerializer)
 
 User = get_user_model()
 

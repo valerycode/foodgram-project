@@ -3,7 +3,6 @@ from django.contrib.admin import AdminSite
 
 from .models import Ingredient, Recipe, RecipeIngredient, Tag
 
-
 AdminSite.empty_value_display = '-пусто-'
 
 
