@@ -9,10 +9,8 @@ User = get_user_model()
 class SubscriptionManager(models.Manager):
     @staticmethod
     def subscriptions(user):
-        author_id = Subscription.objects.filter(
-            user=user).values_list('author', flat=True)
-        subscriptions_list = User.objects.filter(pk__in=author_id)
-        return subscriptions_list
+        return User.objects.filter(pk__in=Subscription.objects.filter(
+            user=user).values_list('author', flat=True))
 
 
 class Subscription(models.Model):
@@ -46,11 +44,9 @@ class Subscription(models.Model):
 class FavoriteManager(models.Manager):
     @staticmethod
     def favorite_recipe(user, tags):
-        recipes_id = Favorite.objects.filter(
-            user=user).values_list('recipe', flat=True)
-        favorite_list = Recipe.objects.tag_filter(tags).filter(
-            pk__in=recipes_id)
-        return favorite_list
+        return Recipe.objects.tag_filter(tags).filter(
+            pk__in=Favorite.objects.filter(
+                user=user).values_list('recipe', flat=True))
 
 
 class Favorite(models.Model):
