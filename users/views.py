@@ -48,9 +48,9 @@ def favorite_recipe(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'recipes/favorite.html', {
-            'page': page,
-            'paginator': paginator,
-        })
+        'page': page,
+        'paginator': paginator,
+    })
 
 
 @login_required
