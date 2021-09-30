@@ -99,7 +99,4 @@ class RecipeIngredient(models.Model):
         ]
 
     def __str__(self):
-        name = (
-            f"{self.ingredient.title} - {self.amount}"
-        )
-        return name
+        return f"{self.ingredient.title} - {self.amount}"

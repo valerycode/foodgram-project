@@ -21,7 +21,7 @@ class CreateDeleteGeneric(mixins.DestroyModelMixin,
         if 'id' not in request.data:
             return Response(
                 {"success": False}, status=status.HTTP_400_BAD_REQUEST,
-                )
+            )
         data = {}
         if self.lookup_field == "recipe":
             recipe = get_object_or_404(Recipe, pk=request.data["id"])
