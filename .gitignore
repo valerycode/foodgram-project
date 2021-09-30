@@ -134,6 +134,7 @@ media/**
 *.DS_Store
 **/.DS_Store
 ._*
+.DS_store/
 
 /shelf/
 /workspace.xml
