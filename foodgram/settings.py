@@ -1,16 +1,24 @@
 import os
+import sentry_sdk
 
+from sentry_sdk.integrations.django import DjangoIntegration
 from dotenv import load_dotenv
 
 load_dotenv()
 
+sentry_sdk.init(
+    dsn="https://755471a1457f4283b59ac7afcae29e48@o657927.ingest.sentry.io/5975360",
+    integrations=[DjangoIntegration()],
+)
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1', '84.252.141.16', 'foodgram.tk', 'www.foodgram.tk']
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -74,8 +82,12 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
