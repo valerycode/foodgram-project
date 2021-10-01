@@ -51,13 +51,37 @@ DB_PORT
 
 ```git push```
 
-### После каждого обновления будет осуществляться:
+- загрузка тестой базы на сайт
+
+```sudo docker exec -it web bash```
+
+```python3 manage.py shell```
+
+выполнить в открывшемся терминале:
+
+```
+>>> from django.contrib.contenttypes.models import ContentType
+
+>>> ContentType.objects.all().delete()
+
+>>> quit()
+```
+
+
+```python manage.py loaddata dump.json ``` 
+
+
+### После каждого обновления кода в GitHub будет осуществляться:
 
 1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8).
 2. Сборка и доставка докер-образов на Docker Hub.
 3. Автоматический деплой.
 4. Отправка уведомления в Telegram.
-  
+
+### Данные суперпользователя:
+логин - admin
+пароль - G6jsn245hNJZKS125
+
 ### Как развернуть проект (локально)
 - отредактировать docker-compose.yaml
 ```
@@ -86,4 +110,3 @@ web:
 - собираем статические данные
 
 ```sudo docker-compose exec web python manage.py collectstatic --no-input```
-
