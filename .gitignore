@@ -130,12 +130,8 @@ dmypy.json
 
 media/**
 
-.DS_Store
-*.DS_Store
+# OS
 **/.DS_Store
-._*
-.DS_store/
-
 /shelf/
 /workspace.xml
 *.iml
