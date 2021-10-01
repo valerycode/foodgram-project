@@ -6,14 +6,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - .env
+      - ./.env
 
   web:
-    build: .
+    build: valerycode/foodgram:latest
     restart: always
-    command: gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000
-    ports:
-      - "8000:8000" 
+    expose:
+      - 8000
     volumes:
       - static_value:/code/static/
       - media_value:/code/media/
@@ -21,7 +20,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - ./.env
 
   nginx:
     image: nginx:1.19.3
