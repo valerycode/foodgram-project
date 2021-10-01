@@ -9,7 +9,7 @@ services:
       - .env
 
   web:
-    build: valerycode/foodgram:latest
+    build: .
     restart: always
     command: gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000
     ports:
