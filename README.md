@@ -53,7 +53,7 @@ DB_PORT
 
 - загрузка тестой базы на сайт
 
-```sudo docker exec -it web bash```
+```sudo docker-compose exec web bash```
 
 ```python3 manage.py shell```
 
