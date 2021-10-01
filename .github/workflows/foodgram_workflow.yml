@@ -25,6 +25,8 @@ jobs:
       run: |
         python -m flake8
 
+
+
   build_and_push_to_docker_hub:
       name: Push Docker image to Docker Hub
       runs-on: ubuntu-latest
@@ -58,7 +60,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            cd code
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
             sudo docker-compose stop
             sudo docker-compose rm web
@@ -75,6 +76,7 @@ jobs:
             echo EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo SITE_ID=${{ secrets.SITE_ID }} >> .env
+            cd foodgram-project-react
             sudo docker-compose up -d
             sudo docker-compose exec -T web python manage.py makemigrations
             sudo docker-compose exec -T web python manage.py migrate
