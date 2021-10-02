@@ -131,9 +131,7 @@ dmypy.json
 media/**
 
 # OS
-recipes/.DS_Store
-templates/.DS_Store
-users/.DS_Store
+**/.DS_Store
 .DS_Store
 /shelf/
 /workspace.xml
