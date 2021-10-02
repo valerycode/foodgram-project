@@ -58,7 +58,7 @@ DB_PORT
 ```sudo ./init-letsencrypt.sh```
 
 
-- загрузка тестой базы на сайт
+- загрузка тестой базы на сайт(без картинок)
 
 ```sudo docker-compose exec web bash```
 
@@ -75,8 +75,11 @@ DB_PORT
 ```
 
 
-```python manage.py loaddata dump.json ``` 
+```python manage.py loaddata dump.json ```
 
+- после установки сертификатов и загрузки тестовой базы:
+
+```sudo docker-compose up -d --build```
 
 ### После каждого обновления кода в GitHub будет осуществляться:
 1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8).
