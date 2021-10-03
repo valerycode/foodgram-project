@@ -9,15 +9,20 @@
 {% endblock %}
 {% block content %}
   {% csrf_token %}
-    <div class="main__header">
-      <h1 class="main__title">Избранное</h1>
-        {% include 'includes/tags.html' %}
-    </div>
-    <div class="card-list">
-      {% for recipe in page %}
-        {% include 'recipes/includes/recipe_card_short.html' %}
-      {% endfor %}
-    </div>
+    <main class="main container">
+      <div class="main__header">
+        <h1 class="main__title">Избранное</h1>
+          {% include 'includes/tags.html' %}
+      </div>
+      <div class="card-list">
+        {% for recipe in page %}
+          {% include 'recipes/includes/recipe_card_short.html' %}
+        {% endfor %}
+      </div>
+      {% if page.has_other_pages %}
+        {% include 'includes/paginator.html' with items=page paginator=paginator %}
+      {% endif %}
+    </main>
 {% endblock %}
 {% block js %}
   <script src="{% static 'js/components/MainCards.js' %}"></script>
