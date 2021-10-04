@@ -145,6 +145,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_USER')
 EMAIL_USE_TLS = True
 SERVER_EMAIL = EMAIL_HOST_USER
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = 'recipes:index'
 LOGOUT_REDIRECT_URL = 'recipes:index'
