@@ -53,12 +53,13 @@ def recipe_view(request, recipe_id):
 @login_required()
 def recipe_edit(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
+    ingredients = recipe.recipe_ingredients.select_related().all()
     if request.user != recipe.author and not request.user.is_superuser:
         return redirect('recipes:index')
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None,
-        instance=recipe
+        instance=recipe,
     )
     if form.is_valid():
         form.save()
@@ -67,6 +68,7 @@ def recipe_edit(request, recipe_id):
     return render(request, 'recipes/create_or_edit_recipe.html', {
         "form": form,
         "recipe": recipe,
+        "ingredients": ingredients,
     })
 
 
