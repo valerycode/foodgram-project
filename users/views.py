@@ -23,10 +23,6 @@ class SignUp(CreateView):
     template_name = "registration/signup.html"
 
 
-class UserPasswordReset(PasswordResetView):
-    from_email = settings.EMAIL_HOST_USER
-
-
 @login_required
 def subscriptions_list(request):
     user_subscriptions = Subscription.objects.subscriptions(user=request.user)
