@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordResetView
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponse
