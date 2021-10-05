@@ -40,7 +40,7 @@
     <div class="card-user__footer">
       {% if request.user.is_authenticated and request.user != author %}
         {% if author|has_subscription:request.user %}
-          {% include 'includes/buttons/unsubscribe.html' %}
+          {% include 'includes/buttons/unsubscribe-simple.html' %}
         {% else %}
           {% include 'includes/buttons/subscribe.html' %}
         {% endif %}
