@@ -16,8 +16,6 @@ from .models import Favorite, Purchase, Subscription
 User = get_user_model()
 
 
-
-
 class SignUp(CreateView):
     form_class = CreationForm
     success_url = reverse_lazy('login')
